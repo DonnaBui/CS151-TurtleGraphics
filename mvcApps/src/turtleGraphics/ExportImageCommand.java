@@ -18,14 +18,19 @@ public class ExportImageCommand extends Command {
     @Override
     public void execute() {
         try {
-            String filename = Utilities.ask("Enter a name for the file to be exported");
+            String path = Utilities.getFileName("turtledrawing.png", false);
+            if (path == null) return; // skip the error popup if user exits out without doing anything
 
+            if (!path.toLowerCase().endsWith(".png")) {
+                path = path + ".png";
+            }
+            
             BufferedImage image = new BufferedImage(view.getWidth(), view.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = image.createGraphics();
             view.paint(g2);
             g2.dispose();
 
-            File outputFile = new File(filename + ".png");
+            File outputFile = new File(path);
             ImageIO.write(image, "png", outputFile);
             
             Utilities.inform("Image successfully saved at " + outputFile.getAbsolutePath());

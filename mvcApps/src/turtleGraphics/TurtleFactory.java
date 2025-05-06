@@ -3,9 +3,10 @@ package turtleGraphics;
 import mvc.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import javax.swing.*;
 
-public class TurtleFactory implements AppFactory {
+public class TurtleFactory implements AppFactory, Serializable {
     View currentView;
 
     public Model makeModel() {

@@ -1,8 +1,9 @@
 package turtleGraphics;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Point {
+public class Point implements Serializable {
     private int x, y, thickness; 
     private Color color; 
     private boolean penDown;
