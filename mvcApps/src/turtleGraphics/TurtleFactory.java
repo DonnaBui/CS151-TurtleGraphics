@@ -1,21 +1,24 @@
 package turtleGraphics;
 
 import mvc.*;
+
 import java.awt.*;
 import javax.swing.*;
 
 public class TurtleFactory implements AppFactory {
+    View currentView;
 
     public Model makeModel() {
         return new Turtle();
     }
 
     public View makeView(Model m) {
-        return new TurtleView((Turtle) m);
+        this.currentView = new TurtleView((Turtle) m);
+        return currentView;
     }
 
     public String[] getEditCommands() {
-        return new String[] {"North", "East", "South", "West", "Clear", "Pen", "Color"};
+        return new String[] {"North", "East", "South", "West", "Clear", "Pen", "Color", "Export", "Thickness"};
     }
 
     public Command makeEditCommand(Model model, String type, Object source) {
@@ -28,6 +31,8 @@ public class TurtleFactory implements AppFactory {
             case "Clear" -> new ClearCommand(turtle);
             case "Pen"   -> new TogglePenCommand(turtle);
             case "Color" -> new SetColorCommand(turtle);
+            case "Export" -> new ExportImageCommand(turtle, currentView);
+            case "Thickness" -> new SetThicknessCommand(turtle);
             default -> null;
         };
     }
@@ -38,10 +43,12 @@ public class TurtleFactory implements AppFactory {
 
     public String[] getHelp() {
         return new String[] {
-            "North/South/East/West: Move the turtle in that direction for X entered steps.",
+            "North/South/East/West: Move the turtle in that direction for X steps.",
             "Clear: Clear the canvas.",
             "Pen: Toggle pen up/down.",
-            "Color: Change the pen color."
+            "Color: Change the pen color.",
+            "Export: Export the drawing to a PNG image.",
+            "Thickness: Change the thickness of the pen's strokes."
         };
     }
 
@@ -85,11 +92,11 @@ public class TurtleFactory implements AppFactory {
     
         public void execute() {
             Turtle t = (Turtle) model;
-            t.setPenUp(!t.isToggled());
+            t.setPen(!t.isToggled());
         }
     }
 
-    public class SetColorCommand extends Command {
+    class SetColorCommand extends Command {
         public SetColorCommand(Model model) {
             super(model);
         }
@@ -100,4 +107,21 @@ public class TurtleFactory implements AppFactory {
             if (newColor != null) t.setColor(newColor);
         }
     }
+
+    class SetThicknessCommand extends Command {
+    
+        public SetThicknessCommand(Model model) {
+            super(model);
+        }
+    
+        public void execute() {
+            try {
+                int thickness = Integer.parseInt(Utilities.ask("Enter pen thickness in pixels:"));
+                ((Turtle) model).setThickness(thickness);
+            } catch (Exception e) {
+                Utilities.error(e);
+            }
+        }
+    }
+
 } 

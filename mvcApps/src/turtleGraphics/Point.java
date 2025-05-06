@@ -3,15 +3,16 @@ package turtleGraphics;
 import java.awt.Color;
 
 public class Point {
-    private int x, y; 
+    private int x, y, thickness; 
     private Color color; 
     private boolean penDown;
-
-    public Point(int x, int y, Color color, boolean penDown) {
+    
+    public Point(int x, int y, Color color, boolean penDown, int thickness) {
         this.x = x;
         this.y = y;
         this.color = color;
         this.penDown = penDown;
+        this.thickness = thickness;
     }
 
     public int getX() {
@@ -36,6 +37,14 @@ public class Point {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getThickness() {
+        return thickness;
+    }
+
+    public void setThickness(int thickness) {
+        this.thickness = thickness;
     }
 }
 

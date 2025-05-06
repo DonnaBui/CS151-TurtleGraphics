@@ -11,7 +11,7 @@ public class Turtle extends Model implements Serializable {
 
     public Turtle() {
         path = new ArrayList<>();
-        path.add(new Point(WORLD_SIZE / 2, WORLD_SIZE / 2, Color.BLACK, true));
+        path.add(new Point(WORLD_SIZE / 2, WORLD_SIZE / 2, Color.BLACK, true, 6));
     }
 
     public Point getLocation() { // MoveCommand class handles this error in TurtleFactory
@@ -32,20 +32,20 @@ public class Turtle extends Model implements Serializable {
             default -> throw new Exception("Invalid heading");
         }
 
-        path.add(new Point(x, y, current.getColor(), current.isToggled()));
+        path.add(new Point(x, y, current.getColor(), current.isToggled(), current.getThickness()));
         changed();
     }
 
     public void clear() {
         Point current = getLocation();
         path.clear();
-        path.add(new Point(current.getX(), current.getY(), current.getColor(), true));
+        path.add(new Point(current.getX(), current.getY(), current.getColor(), current.isToggled(), current.getThickness()));
         changed();
     }
 
-    public void setPenUp(boolean penUp) {
+    public void setPen(boolean status) {
         Point current = getLocation();
-        path.set(path.size() - 1, new Point(current.getX(), current.getY(), current.getColor(), penUp));
+        current.setPen(status);
         changed();
     }
 
@@ -55,12 +55,22 @@ public class Turtle extends Model implements Serializable {
 
     public void setColor(Color c) {
         Point current = getLocation();
-        path.set(path.size() - 1, new Point(current.getX(), current.getY(), c, current.isToggled()));
+        current.setColor(c);
         changed();
     }
 
     public Color getColor() {
         return getLocation().getColor();
+    }
+
+    public void setThickness(int thickness) {
+        Point current = getLocation();
+        current.setThickness(thickness);
+        changed();
+    }
+
+    public int getThickness() {
+        return getLocation().getThickness();
     }
 
     public Iterator<Point> iterator() {

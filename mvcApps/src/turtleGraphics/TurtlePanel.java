@@ -19,9 +19,11 @@ public class TurtlePanel extends AppPanel {
 
         String[] commands = factory.getEditCommands();
         for (String cmd : commands) {
+            JPanel subPanel = new JPanel();
+            subPanel.setOpaque(false);
             JButton button = new JButton(cmd);
-            button.setPreferredSize(new Dimension(100, 40));
-            buttons.add(button);
+            subPanel.add(button, BorderLayout.CENTER);
+            buttons.add(subPanel);
             button.addActionListener(this);
         }
 

@@ -28,9 +28,8 @@ public class TurtleView extends View {
                 if (!p1.isToggled()) {
                     gc.setColor(p1.getColor());
                     Graphics2D g2 = (Graphics2D) gc; // Set the thickness of the line
-                    g2.setStroke(new BasicStroke(6));
+                    g2.setStroke(new BasicStroke(p1.getThickness()));
                     g2.drawLine(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-                    g2.setStroke(new BasicStroke());
                 }
                 p1 = p2;
             }
@@ -38,11 +37,12 @@ public class TurtleView extends View {
 
         // draw turtle
         Point curr = turtle.getLocation();
+        int size = turtle.getThickness();
         gc.setColor(Color.GREEN);
         if (curr.isToggled()) {
-            gc.drawOval(curr.getX() - 5, curr.getY() - 5, 10, 10);
+            gc.drawOval(curr.getX() - size/2, curr.getY() - size/2, size, size);
         } else {
-            gc.fillOval(curr.getX() - 5, curr.getY() - 5, 10, 10);
+            gc.fillOval(curr.getX() - size/2, curr.getY() - size/2, size, size);
         }
 
         gc.setColor(oldColor);
